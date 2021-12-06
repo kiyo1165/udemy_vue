@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo2</title>
+    <!-- doneクラスに取り消し線を付与 -->
+    <style>
+        li{
+            list-style: none;
+        }
+        .done {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+    <div id="app">
+        <input type="text" v-model="newItem">
+         <!-- preventで再読み込みを防ぐ -->
+        <button @click.prevent="addItem">追加</button>
+
+        <!-- 検索 -->
+        <input type="text" v-model="query">検索
+        <ul>
+            <!-- searchFilterに格納されたtodosリストを監視する -->
+            <li v-for="(todo, index) in searchFilter ">
+                <input type="checkbox" v-model="todo.todoDone">
+                <!-- todoDoneがtrueの場合にdoneクラスを付与 -->
+                <!-- todoにはオブジェクトが格納されているため、todo.itemでアクセスする。 -->
+                <span :class="{done: todo.todoDone}">{{ todo.item }}</span>
+                <!-- indexを受け取り対象を削除 -->
+                <button @click="deleteItem(index)">削除</button>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        let app = new Vue({
+            el: '#app',
+            data(){
+                return {
+                    newItem:'',
+                    todos:[], //todoの格納先
+                    query:'' //検索用空データ
+                }
+            },
+            methods:{
+                addItem(){
+                    if(!this.newItem) return //newItemが空であれば何も戻さない
+                    const todo = { //単一のtodo要素を作成
+                        item: this.newItem,
+                        todoDone: false //完了フラグ
+                    }
+                    this.todos.push(todo) //todos配列にpush
+                    this.newItem = '' //push後のnewItemを空に
+                },
+                deleteItem(index){
+                    this.todos.splice(index, 1) //第一引数:forのインデックス番号, 第二引数：第一引数からの削除数
+                }
+            },
+            computed:{
+                searchFilter(){
+                    let self = this //thisをコールバック関数で使用するために束縛する。
+                    return this.todos.filter( todo => { //filterのコールバック関数を定義
+                        return todo.item.indexOf(self.query) !== -1
+                         //指定された値が最初に現れたインデックスを返します。値が見つからない場合は -1 を返します。
+                         //すなわち-1ではなかった場合に検索をかける。
+                    })
+                }
+            }
+        })
+    </script>
+
+</body>
+</html>

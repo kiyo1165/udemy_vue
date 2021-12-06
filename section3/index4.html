@@ -25,7 +25,7 @@
         氏名
         <input type="text" v-model="yourName" /><!-- computedで監視している値 -->
         <p :class="{error: hasError.yourName }">{{ contact.yourName.length}}/20</p>
-        <p v-show="hasError.yourName" class="error">氏名は20文字以内で入力してください。</p>
+        <p v-show="hasError.yourName" class="error"></p>
         <br />
         電話番号
         <input type="tel" v-model="contact.tel" />
