@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API</title>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+    <div id="app">
+        <img :src="dogImage" alt="">
+        <button @click="getDogImage">取得</button>
+
+
+    </div>
+    <script>
+        const url = 'https://dog.ceo/api/breeds/image/random'
+        const options = {
+            method: 'get'
+        }
+        let app = new Vue({
+            el:'#app',
+            data(){
+                return {
+                    dogImage:''
+                }
+            },
+            methods:{
+                async getDogImage(){
+                    const response = await fetch(url, options)
+                    .then( response => response.json())
+                    console.log(response.message)
+                    this.dogImage = response.message
+                }
+            },
+            created(){
+                this.getDogImage()//DOMを作成時にdogimageを取得する
+            }
+        })
+    </script>
+</body>
+</html>

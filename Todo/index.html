@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
+    <title>Vue3</title>
+</head>
+<body>
+    <div id="app">
+        <h2>Todoリスト</h2>
+        <form action="">
+            <input type="text" v-model="newItem">
+            <button @click.prevent="addItem">登録</button>
+        </form>
+        <hr>
+        <ul>
+            <li v-for="(todo, index) in todos">
+                <input type="checkbox" v-model="todo.isDone">
+                <span :class="{done: todo.isDone}">{{ todo.item }}</span>
+                <!-- 更新 -->
+                <div v-if="todo.isActive">
+                    <span >
+                        <input type="text" v-model="todo.item">
+                    </span>
+                    <button @click="updateDone(index)">完了</button>
+                </div>
+                <button @click="deleteItem(index)">削除</button>
+                <button v-show="!todo.isActive" @click="updateItem(index)">修正</button>
+                <hr>
+            </li>
+     
+        </ul>
+        <pre>{{$data}}</pre>
+
+    </div>
+    <script src="https://unpkg.com/vue@3.1.5"></script>
+    <script src="js/main.js"></script>
+
+
+
+</body>
+</html>
